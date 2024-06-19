@@ -49,7 +49,7 @@ def blur_test_local():
         LOGGER.info(f"blurring test request recived")
         print(f'blur request recived')
         car_directory = "images_to_blur"
-        images=[f'{car_directory}/1',f'{car_directory}/2']
+        images=[f'{car_directory}/1.jpg',f'{car_directory}/2.jpg']
         for img in images:
              images.append(cv.imread(f'{car_directory}/{img}'))
         LOGGER.info(f"proccess started")
