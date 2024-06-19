@@ -153,10 +153,7 @@ def blureFace_file(images,fd_threshold,LOGGER):
 
                     #apply the blured face into the sorce image
                     img[y1:y2, x1:x2]=blurredFace[y1:y2, x1:x2]
-                    
-                    blurred_images.append(img,i)  
-                    LOGGER.info(f'image blurring ended for for image {i}')
-
+                
                 except cv2.error as e:
                     LOGGER.error(f"OpenCV error occurred: {e}")
                     # Handle specific OpenCV errors
@@ -167,7 +164,11 @@ def blureFace_file(images,fd_threshold,LOGGER):
 
                 except Exception as e:
                     LOGGER.error(f"An unexpected error occurred: {e}")
-                    # Handle any other unexpected errors
+                    # Handle any other unexpected errors   
+            blurred_images.append(img,i)  
+            LOGGER.info(f'image blurring ended for for image {i}')
+
+               
         if blurred_images !=[]:
             return blurred_images
         else:

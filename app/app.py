@@ -45,17 +45,19 @@ def blur_file():
 @app.route('/blur-test-local')
 def blur_test_local():
         LOGGER = create_logger("blur_log")
+        images=[]
         LOGGER.info(f"blurring test request recived")
-        request_start_time=time.time()
         print(f'blur request recived')
         car_directory = "app/images_to_blur"
+        images=os.listdir(car_directory)
+        for img in images:
+             images.append=cv.imread(f'{car_directory}/{img}')
         LOGGER.info(f"proccess started")
-        blur_status,faces = blureFace_dir(car_directory,LOGGER)
+        blurred_images = blureFace_file(images,0.4,LOGGER)
         LOGGER.info(f"proccess ended")
-        print(f'request handled in {time.time()-request_start_time}')
-        print(faces)
-        LOGGER.info(f'blur proccessended with status: {blur_status}. {len(faces)} been detected')
-        return f'blur proccessended with status: {blur_status}. {len(faces)} been detected'
+        print(f'detected faces in {len(blurred_images)} images' )
+        LOGGER.info(f'blur proccess ended blurred {len(blurred_images)} images')
+        return  f'blur proccess ended blurred {len(blurred_images)} images'
     
 
 
