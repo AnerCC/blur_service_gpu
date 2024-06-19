@@ -101,6 +101,7 @@ def blureFace_dir(car_diretory,fd_threshold,LOGGER):
     else:
             return None
 
+# images = ndarrays of images, fd_threshold =  face detection threshold (float), LOGGER = Logger object for creating log
 def blureFace_file(images,fd_threshold,LOGGER):
         blurred_images=[]
         for i,img in enumerate(images):
@@ -117,15 +118,15 @@ def blureFace_file(images,fd_threshold,LOGGER):
 
                 except KeyError as e:
                     # Handle KeyError (e.g., if 'facial_area' or 'identity' is not found in resp)
-                    return f'KeyError: {str(e)}', 400
+                    LOGGER.error(f'KeyError: {str(e)}')
 
                 except cv2.error as e:
                     # Handle OpenCV errors (e.g., if there's an issue with image processing)
-                    return f'OpenCV error: {str(e)}', 500
+                    LOGGER.error(f'OpenCV error: {str(e)}')
 
                 except Exception as e:
                     # Handle other unexpected errors
-                    return f'Unexpected error: {str(e)}', 500
+                    LOGGER.error(f'Unexpected error: {str(e)}')
 
                 try:     
                     # Get detected face area from retinaFace response and assign face region to face veriable
@@ -153,7 +154,7 @@ def blureFace_file(images,fd_threshold,LOGGER):
                     #apply the blured face into the sorce image
                     img[y1:y2, x1:x2]=blurredFace[y1:y2, x1:x2]
                     
-                    blurred_images.append([img],img)  
+                    blurred_images.append(img,i)  
                     LOGGER.info(f'image blurring ended for for image {i}')
 
                 except cv2.error as e:

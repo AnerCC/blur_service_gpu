@@ -32,9 +32,9 @@ def blur_file():
     req_data = request.get_json()
     images=req_data["images"]
     fd_threshold=req_data["fd_threshold"]
-    LOGGER.info(f"started blurring")
+    LOGGER.info(f"sent to blur")
     blurred_images = blureFace_file(images,fd_threshold,LOGGER)
-    LOGGER.info(f"blurring ended")
+    LOGGER.info(f"recived from blur")
          
     return blurred_images,200
 
