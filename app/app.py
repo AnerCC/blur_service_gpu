@@ -1,10 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import os
 from moduls import blureFace_dir,blureFace_file
 import time
 import cv2 as cv
 import numpy as np
 from logger import create_logger
+
 
 
 
@@ -23,22 +24,30 @@ def blur():
         blurred_images = blureFace_dir(car_directory,fd_threshold,LOGGER)
         LOGGER.info(f"{car_directory} has done blurring proccess")
         #blur_status options - blurred, no_detections, 
-        return blurred_images,200
+        return blurred_images.tolist(),200
 
-# recives a requestcontaining binary files
-@app.route('/blur-file', methods=['POST']) 
+
+@app.route('/blur-file', methods=['POST'])
 def blur_file():
+  try:
     LOGGER = create_logger("blur_log")
-    LOGGER.info(f"blur-file request recived")
-    req_data = request.get_json()
-    images=req_data["images"]
-    fd_threshold=req_data["fd_threshold"]
-    LOGGER.info(f"sent to blur")
-    blurred_images = blureFace_file(images,fd_threshold,LOGGER)
-    LOGGER.info(f"recived from blur")
-         
-    return blurred_images,200
+    LOGGER.info(f"blur-file request received")
 
+    # Access request data
+    data = request.json
+    fd_threshold = data["fd_threshold"]
+    image=data["image"]
+    shape=data["shape"]
+    reshaped_image = np.array(image,dtype=np.uint8).reshape(shape)
+    blurred_image = blureFace_file(reshaped_image,fd_threshold,LOGGER)  # Pass fd_threshold and logger
+    flatten_blurred_image=blurred_image.ravel().tolist()
+    return jsonify({'blurred_image': flatten_blurred_image}), 200  # Return JSON with processed images
+
+   
+
+  except Exception as e:
+    LOGGER.error(f"Error processing images: {e}")
+    return jsonify({'error': str(e)}), 500
 
 
 
