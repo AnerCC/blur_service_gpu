@@ -7,11 +7,12 @@ import numpy as np
 from logger import create_logger
 
 
-LOGGER = create_logger("blur_log")
+
 app = Flask(__name__)
 
 @app.route('/blur-dir', methods=['POST'])
 def blur():
+    LOGGER = create_logger("blur_log")
     LOGGER.info(f"blur-dir-path request recived")
     if request.is_json:
         fd_threshold=request.data["df_threshold"]
@@ -27,7 +28,7 @@ def blur():
 # recives a requestcontaining binary files
 @app.route('/blur-file', methods=['POST']) 
 def blur_file():
-
+    LOGGER = create_logger("blur_log")
     LOGGER.info(f"blur-file request recived")
     req_data = request.get_json()
     images=req_data["images"]
@@ -43,6 +44,7 @@ def blur_file():
 
 @app.route('/blur-test-local')
 def blur_test_local():
+        LOGGER = create_logger("blur_log")
         LOGGER.info(f"blurring test request recived")
         request_start_time=time.time()
         print(f'blur request recived')
