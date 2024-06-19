@@ -51,7 +51,7 @@ def blur_test_local():
         car_directory = "app/images_to_blur"
         images=os.listdir(car_directory)
         for img in images:
-             images.append=cv.imread(f'{car_directory}/{img}')
+             images.append(cv.imread(f'{car_directory}/{img}'))
         LOGGER.info(f"proccess started")
         blurred_images = blureFace_file(images,0.4,LOGGER)
         LOGGER.info(f"proccess ended")
